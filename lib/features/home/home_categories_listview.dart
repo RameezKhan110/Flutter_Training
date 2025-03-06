@@ -34,7 +34,6 @@ class CategoriesListView extends StatelessWidget {
 
 class ItemCategory extends StatelessWidget {
   final String name;
-
   const ItemCategory({super.key, required this.name});
 
   @override

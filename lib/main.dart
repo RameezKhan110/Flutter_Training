@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/navigation/app_router.dart';
+import 'package:go_router/go_router.dart';
 
 import 'features/account/account_page.dart';
 import 'features/cart/cart_page.dart';
@@ -14,25 +16,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+
+    return MaterialApp.router(
+      routerConfig: AppRouter.router,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const ParentPage(),
+      // home: const MainPage(),
     );
   }
 }
 
-class ParentPage extends StatefulWidget {
-  const ParentPage({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  State<ParentPage> createState() => _ParentPageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _ParentPageState extends State<ParentPage> {
+class _MainPageState extends State<MainPage> {
 
   var pageIndex = 0;
   final pages = [Homepage(), SearchPage(), CartPage(), AccountPage()];

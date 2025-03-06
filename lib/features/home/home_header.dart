@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/navigation/app_paths.dart';
+import 'package:go_router/go_router.dart';
 import '../../utils/app_fonts.dart';
 import '../../utils/app_images.dart';
 import '../../utils/app_strings.dart';
@@ -22,7 +24,9 @@ class HomeHeader extends StatelessWidget {
         ),
 
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            print("clicked filter");
+          },
           icon: Image.asset(
             AppImages.filterImage,
             height: 20,

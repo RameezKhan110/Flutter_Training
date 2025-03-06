@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/navigation/app_paths.dart';
+import 'package:go_router/go_router.dart';
 import '../../model/product_model.dart';
 import '../../utils/app_fonts.dart';
 import '../../utils/app_images.dart';
@@ -85,10 +87,16 @@ class ProductsListView extends StatelessWidget {
       height: 300,
       child: ListView.separated(
         itemBuilder: (context, index) {
-          return ItemProduct(
-            productImage: productsList[index].productImage,
-            productName: productsList[index].productName,
+          return GestureDetector(
+              onTap: () {
+                context.push(AppPaths.categoryDetail);
+              },
+              child: ItemProduct(
+                productImage: productsList[index].productImage,
+                productName: productsList[index].productName,
+              )
           );
+
         },
         itemCount: productsList.length,
         scrollDirection: Axis.horizontal,
