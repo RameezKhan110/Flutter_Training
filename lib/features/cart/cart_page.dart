@@ -1,8 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
 import '../../utils/app_colors.dart';
-import '../../utils/app_fonts.dart';
-import '../home/category_detail_page.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -53,12 +52,6 @@ class _CartStatePage extends State<CartPage> {
           ),
         ),
       ),
-      // Center(
-      //   child: ElevatedButton(
-      //     onPressed: () => context.go(AppPaths.home),
-      //     child: const Text('Go back to the Home screen'),
-      //   ),
-      // ),
     );
   }
 }

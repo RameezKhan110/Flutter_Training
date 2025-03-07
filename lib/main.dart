@@ -14,7 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  String name = dotenv.env['NAME'] ?? 'Ali';
+  String name = dotenv.env['NAME'] ?? 'Khan';
   print(name);
 
   runApp(
