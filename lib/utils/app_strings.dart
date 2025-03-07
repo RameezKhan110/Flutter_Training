@@ -1,6 +1,5 @@
 class AppStrings {
-  static final hello = "Hello";
-  static final userName = "Jack Dolye";
+  static final helloJack = "Hello\nJack Doyle";
   static final designerNearYou = "Designer Near You";
   static final interior = "Interior";
   static final sofas = "Sofas";
@@ -10,4 +9,5 @@ class AppStrings {
   static final showPiece = "Show Piece";
   static final yellowThemeInterior = "Yellow Theme Interior";
   static final themeInterior = "Theme Interior";
+  static final language = "Language";
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/navigation/app_paths.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_training/features/home/category_detail_page.dart';
+
 import '../../utils/app_fonts.dart';
 import '../../utils/app_images.dart';
-import '../../utils/app_strings.dart';
+import '../cart/cart_page.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
@@ -13,9 +13,9 @@ class HomeHeader extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(
+          child: LanguageText(
             softWrap: true,
-            "${AppStrings.hello},\n${AppStrings.userName}",
+            "helloJack",
             style: TextStyle(
               fontWeight: FontWeights.boldFontWeight,
               fontSize: 26,

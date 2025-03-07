@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_training/navigation/app_router.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,8 +9,23 @@ import 'features/cart/cart_page.dart';
 import 'features/home/home_page.dart';
 import 'features/search/search_page.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  String name = dotenv.env['NAME'] ?? 'Ali';
+  print(name);
+
+  runApp(
+      EasyLocalization(
+        supportedLocales: [Locale('en'), Locale('ar')],
+        path: 'assets/translations',
+        startLocale: Locale('en'),
+        fallbackLocale: Locale('en'),
+        child: MyApp(),
+      )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -18,6 +35,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp.router(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       routerConfig: AppRouter.router,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',

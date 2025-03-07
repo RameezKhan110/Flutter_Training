@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/features/home/category_detail_page.dart';
 import 'package:flutter_training/navigation/app_paths.dart';
 import 'package:go_router/go_router.dart';
 import '../../model/product_model.dart';
 import '../../utils/app_fonts.dart';
 import '../../utils/app_images.dart';
 import '../../utils/app_strings.dart';
+import '../cart/cart_page.dart';
 
 class ItemProduct extends StatelessWidget {
   final String productImage, productName;
@@ -46,7 +48,7 @@ class ItemProduct extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.only(left: 20, top: 10, right: 5),
-                child: Text(
+                child: LanguageText(
                   textAlign: TextAlign.start,
                   productName,
                   style: TextStyle(
@@ -71,15 +73,15 @@ class ProductsListView extends StatelessWidget {
     var productsList = [
       ProductModel(
         productImage: AppImages.yellowInteriorImage,
-        productName: AppStrings.yellowThemeInterior,
+        productName: "yellowThemeInterior",
       ),
       ProductModel(
         productImage: AppImages.interiorImage,
-        productName: AppStrings.themeInterior,
+        productName: "themeInterior",
       ),
       ProductModel(
         productImage: AppImages.interiorImage,
-        productName: AppStrings.themeInterior,
+        productName: "themeInterior",
       ),
     ];
 

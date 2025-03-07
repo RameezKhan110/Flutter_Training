@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_training/features/home/category_detail_page.dart';
 import '../../utils/app_fonts.dart';
 import '../../utils/app_strings.dart';
+import '../cart/cart_page.dart';
 
 class CategoriesListView extends StatelessWidget {
   const CategoriesListView({super.key});
@@ -8,12 +10,12 @@ class CategoriesListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var filterItemsList = [
-      AppStrings.interior,
-      AppStrings.sofas,
-      AppStrings.chairs,
-      AppStrings.tables,
-      AppStrings.carpets,
-      AppStrings.showPiece,
+      "interior",
+      "sofas",
+      "chairs",
+      "tables",
+      "carpets",
+      "showPiece"
     ];
 
     return SizedBox(
@@ -45,7 +47,7 @@ class ItemCategory extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.black, width: 1),
       ),
-      child: Text(
+      child: LanguageText(
         name,
         style: TextStyle(
           color: Colors.black,
