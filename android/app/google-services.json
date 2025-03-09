@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "320312910836",
+    "project_id": "flutter-training-79069",
+    "storage_bucket": "flutter-training-79069.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320312910836:android:a412ca1ee2b8a8857c4fa1",
+        "android_client_info": {
+          "package_name": "com.example.flutter_training"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnfSV1aqWQTwt7P-wBCe1lBnUcT92fBsg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

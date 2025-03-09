@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_training/features/home/category_detail_page.dart';
 import 'package:flutter_training/navigation/app_paths.dart';
+import 'package:flutter_training/remote_config_provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../model/product_model.dart';
 import '../../utils/app_fonts.dart';
 import '../../utils/app_images.dart';
@@ -35,10 +38,11 @@ class ItemProduct extends StatelessWidget {
                   topLeft: Radius.circular(18),
                   topRight: Radius.circular(18),
                 ),
-                child: Image.asset(
-                  productImage,
-                  fit: BoxFit.fill,
-                  width: double.infinity,
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: productImage,
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
             ),
@@ -85,27 +89,29 @@ class ProductsListView extends StatelessWidget {
       ),
     ];
 
-    return SizedBox(
-      height: 300,
-      child: ListView.separated(
-        itemBuilder: (context, index) {
-          return GestureDetector(
-              onTap: () {
-                context.push(AppPaths.categoryDetail);
+    return Consumer<RemoteConfigProvider>(
+      builder:
+          ((context, provider, child) => SizedBox(
+            height: 300,
+            child: ListView.separated(
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    context.push(AppPaths.categoryDetail);
+                  },
+                  child: ItemProduct(
+                    productImage: provider.products![index].productImage,
+                    productName: provider.products![index].productName,
+                  ),
+                );
               },
-              child: ItemProduct(
-                productImage: productsList[index].productImage,
-                productName: productsList[index].productName,
-              )
-          );
-
-        },
-        itemCount: productsList.length,
-        scrollDirection: Axis.horizontal,
-        separatorBuilder: (context, index) {
-          return SizedBox(width: 20);
-        },
-      ),
+              itemCount: provider.products!.length,
+              scrollDirection: Axis.horizontal,
+              separatorBuilder: (context, index) {
+                return SizedBox(width: 20);
+              },
+            ),
+          )),
     );
   }
 }

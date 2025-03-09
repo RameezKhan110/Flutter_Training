@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/features/home/category_detail_page.dart';
+import 'package:flutter_training/remote_config_provider.dart';
+import 'package:provider/provider.dart';
 import '../../utils/app_fonts.dart';
 import '../../utils/app_strings.dart';
 import '../cart/cart_page.dart';
@@ -9,33 +11,28 @@ class CategoriesListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var filterItemsList = [
-      "interior",
-      "sofas",
-      "chairs",
-      "tables",
-      "carpets",
-      "showPiece"
-    ];
-
-    return SizedBox(
-      height: 40,
-      child: ListView.separated(
-        itemBuilder: (context, index) {
-          return ItemCategory(name: filterItemsList[index]);
-        },
-        itemCount: filterItemsList.length,
-        scrollDirection: Axis.horizontal,
-        separatorBuilder: (context, index) {
-          return SizedBox(width: 5);
-        },
-      ),
+    return Consumer<RemoteConfigProvider>(
+      builder:
+          ((context, provider, child) => SizedBox(
+                    height: 40,
+                    child: ListView.separated(
+                      itemBuilder: (context, index) {
+                        return ItemCategory(name: provider.categories![index]);
+                      },
+                      itemCount: provider.categories!.length,
+                      scrollDirection: Axis.horizontal,
+                      separatorBuilder: (context, index) {
+                        return SizedBox(width: 5);
+                      },
+                    ),
+                  )),
     );
   }
 }
 
 class ItemCategory extends StatelessWidget {
   final String name;
+
   const ItemCategory({super.key, required this.name});
 
   @override
