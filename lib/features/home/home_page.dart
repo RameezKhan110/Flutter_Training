@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_training/features/home/category_detail_page.dart';
 import 'package:flutter_training/features/home/home_header.dart';
-import 'package:flutter_training/remote_config_provider.dart';
+import 'package:flutter_training/provider/remote_config_provider.dart';
 import 'package:flutter_training/utils/app_fonts.dart';
 import 'package:flutter_training/utils/app_strings.dart';
 import 'package:provider/provider.dart';

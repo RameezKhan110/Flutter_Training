@@ -1,18 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_training/bottom_nav_provider.dart';
-import 'package:flutter_training/remote_config_provider.dart';
 import 'package:flutter_training/navigation/app_router.dart';
-import 'package:go_router/go_router.dart';
-import 'features/account/account_page.dart';
-import 'features/cart/cart_page.dart';
-import 'features/home/home_page.dart';
-import 'firebase_options.dart';
-import 'features/search/search_page.dart';
+import 'package:flutter_training/provider/bottom_nav_provider.dart';
+import 'package:flutter_training/provider/remote_config_provider.dart';
 import 'package:provider/provider.dart';
+
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
