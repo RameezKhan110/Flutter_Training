@@ -1,6 +1,7 @@
 import 'package:flutter_training/features/home/category_detail_page.dart';
 import 'package:flutter_training/main.dart';
 import 'package:flutter_training/navigation/app_paths.dart';
+import 'package:flutter_training/remote_config_testing_page.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {

@@ -1,30 +1,35 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_training/bottom_nav_provider.dart';
+import 'package:flutter_training/remote_config_provider.dart';
 import 'package:flutter_training/navigation/app_router.dart';
 import 'package:go_router/go_router.dart';
-
 import 'features/account/account_page.dart';
 import 'features/cart/cart_page.dart';
 import 'features/home/home_page.dart';
+import 'firebase_options.dart';
 import 'features/search/search_page.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: ".env");
   String name = dotenv.env['NAME'] ?? 'Khan';
   print(name);
 
   runApp(
-      EasyLocalization(
-        supportedLocales: [Locale('en'), Locale('ar')],
-        path: 'assets/translations',
-        startLocale: Locale('en'),
-        fallbackLocale: Locale('en'),
-        child: MyApp(),
-      )
+    EasyLocalization(
+      supportedLocales: [Locale('en'), Locale('ar')],
+      path: 'assets/translations',
+      startLocale: Locale('en'),
+      fallbackLocale: Locale('en'),
+      child: MyApp(),
+    ),
   );
 }
 
@@ -33,92 +38,83 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return MaterialApp.router(
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      routerConfig: AppRouter.router,
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => RemoteConfigProvider()),
+        ChangeNotifierProvider(create: (context) => BottomNavProvider())
+      ],
+      child: MaterialApp.router(
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        routerConfig: AppRouter.router,
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        ),
+        // home: const MainPage(),
       ),
-      // home: const MainPage(),
     );
   }
 }
 
-class MainPage extends StatefulWidget {
+class MainPage extends StatelessWidget {
   const MainPage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
-}
-
-class _MainPageState extends State<MainPage> {
-
-  var pageIndex = 0;
-  final pages = [Homepage(), SearchPage(), CartPage(), AccountPage()];
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: bottomNavBar(context),
-      body: pages[pageIndex],
+    return Consumer<BottomNavProvider>(
+      builder:
+          ((context, provider, child) => Scaffold(
+            bottomNavigationBar: bottomNavBar(context),
+            body: provider.pages[provider.pageIndex],
+          )),
     );
   }
 
-  SizedBox bottomNavBar(BuildContext context) {
-    return SizedBox(
-      height: 60,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                pageIndex = 0;
-              });
-            },
-            enableFeedback: false,
-            icon: Icon(Icons.home_filled),
-          ),
+  Consumer<BottomNavProvider> bottomNavBar(BuildContext context) {
+    return Consumer<BottomNavProvider>(
+      builder:
+          ((context, provider, child) => SizedBox(
+            height: 60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    provider.changePageIndex(0);
+                  },
+                  enableFeedback: false,
+                  icon: Icon(Icons.home_filled),
+                ),
 
-          IconButton(
-              onPressed: () {
-                setState(() {
-                  pageIndex = 1;
-                });
-              },
-              enableFeedback: false,
-              icon: Icon(Icons.search)
-          ),
+                IconButton(
+                  onPressed: () {
+                    provider.changePageIndex(1);
+                  },
+                  enableFeedback: false,
+                  icon: Icon(Icons.search),
+                ),
 
+                IconButton(
+                  onPressed: () {
+                    provider.changePageIndex(2);
+                  },
+                  enableFeedback: false,
+                  icon: Icon(Icons.shopping_bag_outlined),
+                ),
 
-          IconButton(
-              onPressed: () {
-                setState(() {
-                  pageIndex = 2;
-                });
-              },
-              enableFeedback: false,
-              icon: Icon(Icons.shopping_bag_outlined)
-          ),
-
-
-          IconButton(
-              onPressed: () {
-                setState(() {
-                  pageIndex = 3;
-                });
-              },
-              enableFeedback: false,
-              icon: Icon(Icons.person)
-          )
-        ],
-      ),
+                IconButton(
+                  onPressed: () {
+                    provider.changePageIndex(3);
+                  },
+                  enableFeedback: false,
+                  icon: Icon(Icons.person),
+                ),
+              ],
+            ),
+          )),
     );
-
   }
 }
