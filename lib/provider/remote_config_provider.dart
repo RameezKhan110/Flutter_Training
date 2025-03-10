@@ -41,7 +41,7 @@ class RemoteConfigProvider extends ChangeNotifier {
 
       String categoriesJsonStr = _remoteConfig.getString("categories");
       Map<String, dynamic> categoriesMap = jsonDecode(categoriesJsonStr);
-      _categories = List<String>.from(categoriesMap['my_strings']);
+      _categories = List<String>.from(categoriesMap['my_categories']);
 
       String designersJsonStr = _remoteConfig.getString("designers");
       Map<String, dynamic> designersMap = jsonDecode(designersJsonStr);

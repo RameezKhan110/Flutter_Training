@@ -21,7 +21,6 @@ class Homepage extends StatelessWidget {
           ((context, provider, child) =>
               provider.isLoading
                   ? Scaffold(
-                    // appBar: AppBar(title: Text("Remote Config")),
                     body: Center(child: CircularProgressIndicator()),
                   )
                   : SafeArea(

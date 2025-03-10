@@ -41,7 +41,10 @@ class ItemProduct extends StatelessWidget {
                 child: CachedNetworkImage(
                   fit: BoxFit.cover,
                   imageUrl: productImage,
-                  placeholder: (context, url) => CircularProgressIndicator(),
+                  placeholder: (context, url) {
+                    return Container();
+                    // return Image.asset("assets/images/yellow_interior.jpg", fit: BoxFit.cover,);
+                  },
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
