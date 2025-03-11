@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_training/model/product_model.dart';
+import 'package:flutter_training/utils/get_storage_helper.dart';
+import 'package:get_storage/get_storage.dart';
 
 class RemoteConfigProvider extends ChangeNotifier {
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
@@ -19,7 +21,10 @@ class RemoteConfigProvider extends ChangeNotifier {
   List<String>? get designers => _designers;
 
   List<ProductModel>? _products = [];
+
   List<ProductModel>? get products => _products;
+
+  GetStorageHelper getStorageHelper = GetStorageHelper();
 
   RemoteConfigProvider() {
     _initialize();
@@ -39,6 +44,9 @@ class RemoteConfigProvider extends ChangeNotifier {
     try {
       await _remoteConfig.fetchAndActivate();
 
+      getStorageHelper.writeStorage("base_url", _remoteConfig.getString("base_url"));
+      getStorageHelper.writeStorage("bearer_token", _remoteConfig.getString("bearer_token"));
+
       String categoriesJsonStr = _remoteConfig.getString("categories");
       Map<String, dynamic> categoriesMap = jsonDecode(categoriesJsonStr);
       _categories = List<String>.from(categoriesMap['my_categories']);
@@ -50,7 +58,8 @@ class RemoteConfigProvider extends ChangeNotifier {
       String productsJsonStr = _remoteConfig.getString("products");
       Map<String, dynamic> productsMap = jsonDecode(productsJsonStr);
       List<dynamic> productsList = productsMap['products'];
-      _products = productsList.map((json) => ProductModel.fromJson(json)).toList();
+      _products =
+          productsList.map((json) => ProductModel.fromJson(json)).toList();
 
       _isLoading = false;
       notifyListeners();

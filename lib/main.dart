@@ -8,8 +8,9 @@ import 'package:flutter_training/provider/account_provider.dart';
 import 'package:flutter_training/provider/search_provider.dart';
 import 'package:flutter_training/provider/remote_config_provider.dart';
 import 'package:flutter_training/dio/rest_api_service.dart';
+import 'package:flutter_training/utils/get_storage_helper.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
-
 import 'firebase_options.dart';
 
 void main() async {
@@ -17,6 +18,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: ".env");
+  await GetStorage.init();
   String name = dotenv.env['NAME'] ?? 'Khan';
   print(name);
 
