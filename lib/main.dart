@@ -20,28 +20,6 @@ void main() async {
   String name = dotenv.env['NAME'] ?? 'Khan';
   print(name);
 
-  final apiService = RestApiService();
-  try {
-    // Get the movie list
-    final response = await apiService.getPopularMovies(1);
-
-    // Print the movie titles
-    response.data.forEach((movie) {
-      print('Title: ${movie.title}');
-      print('Overview: ${movie.overview}');
-      print('Release Date: ${movie.releaseDate}');
-      print('Vote Average: ${movie.voteAverage}');
-      print('Poster Path: ${movie.posterPath}');
-      print('Genres: ${movie.genreIds.join(", ")}\n');
-    });
-
-    // // Example of other fields
-    // print('Total Pages: ${response.totalPages}');
-    // print('Total Results: ${response.totalResults}');
-  } catch (e) {
-    print('Failed to fetch data: $e');
-  }
-
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en'), Locale('ar')],

@@ -9,9 +9,10 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<SearchProvider>().getPopularMovies(1);
-    });
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   context.read<SearchProvider>().getPopularMovies(1);
+    // });
 
     return Consumer<SearchProvider>(
       builder:

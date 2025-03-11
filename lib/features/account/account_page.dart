@@ -10,9 +10,6 @@ class AccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AccountProvider>().getTopRatedMovies(1);
-    });
 
     return Consumer<AccountProvider>(
       builder:
@@ -65,7 +62,7 @@ class ItemTopRatedMovies extends StatelessWidget {
             child: CachedNetworkImage(
               fit: BoxFit.cover,
               imageUrl: "https://image.tmdb.org/t/p/w500${topRatedMoviesResult.posterPath}",
-              placeholder: (context, url) => CircularProgressIndicator(),
+              placeholder: (context, url) => Container(),
               errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),

@@ -12,6 +12,10 @@ class SearchProvider extends ChangeNotifier {
   bool _isPopularMoviesLoading = false;
   bool get isPopularMoviesLoading => _isPopularMoviesLoading;
 
+  SearchProvider() {
+    getPopularMovies(1);
+  }
+
   Future<void> getPopularMovies(int page) async {
     _isPopularMoviesLoading = true;
     notifyListeners();
@@ -20,13 +24,10 @@ class SearchProvider extends ChangeNotifier {
       final response = await apiService.getPopularMovies(page);
       if (response.data != null) {
         _popularMovies = PopularMovies.fromJson(response.data);
-        // _upcomingMoviesErrorMessage = "";
         print(_popularMovies?.results?[0].title);
       } else {
-        // _upcomingMoviesErrorMessage = "No data received.";
       }
     } catch (e) {
-      // _upcomingMoviesErrorMessage = "Failed to load upcoming movies: $e";
       _popularMovies = null;
       print("exception $e");
     }
