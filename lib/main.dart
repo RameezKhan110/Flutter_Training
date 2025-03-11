@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_training/navigation/app_router.dart';
 import 'package:flutter_training/provider/bottom_nav_provider.dart';
+import 'package:flutter_training/provider/account_provider.dart';
+import 'package:flutter_training/provider/search_provider.dart';
 import 'package:flutter_training/provider/remote_config_provider.dart';
+import 'package:flutter_training/dio/rest_api_service.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
@@ -16,6 +19,28 @@ void main() async {
   await dotenv.load(fileName: ".env");
   String name = dotenv.env['NAME'] ?? 'Khan';
   print(name);
+
+  final apiService = RestApiService();
+  try {
+    // Get the movie list
+    final response = await apiService.getPopularMovies(1);
+
+    // Print the movie titles
+    response.data.forEach((movie) {
+      print('Title: ${movie.title}');
+      print('Overview: ${movie.overview}');
+      print('Release Date: ${movie.releaseDate}');
+      print('Vote Average: ${movie.voteAverage}');
+      print('Poster Path: ${movie.posterPath}');
+      print('Genres: ${movie.genreIds.join(", ")}\n');
+    });
+
+    // // Example of other fields
+    // print('Total Pages: ${response.totalPages}');
+    // print('Total Results: ${response.totalResults}');
+  } catch (e) {
+    print('Failed to fetch data: $e');
+  }
 
   runApp(
     EasyLocalization(
@@ -36,7 +61,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => RemoteConfigProvider()),
-        ChangeNotifierProvider(create: (context) => BottomNavProvider())
+        ChangeNotifierProvider(create: (context) => BottomNavProvider()),
+        ChangeNotifierProvider(create: (context) => SearchProvider()),
+        ChangeNotifierProvider(create: (context) => AccountProvider()),
       ],
       child: MaterialApp.router(
         localizationsDelegates: context.localizationDelegates,
