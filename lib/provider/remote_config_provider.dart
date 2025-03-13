@@ -45,12 +45,14 @@ class RemoteConfigProvider extends ChangeNotifier {
       await _remoteConfig.fetchAndActivate();
 
       getStorageHelper.writeStorage("base_url", _remoteConfig.getString("base_url"));
+      getStorageHelper.writeStorage("platzi_base_url", _remoteConfig.getString("platzi_base_url"));
       getStorageHelper.writeStorage("bearer_token", _remoteConfig.getString("bearer_token"));
 
       final String endpointsJsonStr = _remoteConfig.getString("end_points");
       Map<String, dynamic> endpointsMap = jsonDecode(endpointsJsonStr);
       getStorageHelper.writeStorage("popular_movies", endpointsMap["popular_movies"]);
       getStorageHelper.writeStorage("top_rated_movies", endpointsMap["top_rated_movies"]);
+      getStorageHelper.writeStorage("platzi_upload_file", endpointsMap["platzi_upload_file"]);
 
       String categoriesJsonStr = _remoteConfig.getString("categories");
       Map<String, dynamic> categoriesMap = jsonDecode(categoriesJsonStr);

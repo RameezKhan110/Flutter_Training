@@ -1,11 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_training/navigation/app_router.dart';
 import 'package:flutter_training/provider/bottom_nav_provider.dart';
-import 'package:flutter_training/provider/account_provider.dart';
-import 'package:flutter_training/provider/search_provider.dart';
+import 'package:flutter_training/provider/account_cubit.dart';
+import 'package:flutter_training/provider/cart_provider.dart';
+import 'package:flutter_training/provider/search_cubit.dart';
 import 'package:flutter_training/provider/remote_config_provider.dart';
 import 'package:flutter_training/dio/rest_api_service.dart';
 import 'package:flutter_training/utils/get_storage_helper.dart';
@@ -28,7 +30,24 @@ void main() async {
       path: 'assets/translations',
       startLocale: Locale('en'),
       fallbackLocale: Locale('en'),
-      child: MyApp(),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => RemoteConfigProvider()),
+          ChangeNotifierProvider(create: (context) => BottomNavProvider()),
+          ChangeNotifierProvider(create: (context) => CartProvider()),
+        ],
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<SearchCubit>(
+              create: (context) => SearchCubit(RestApiService()),
+            ),
+            BlocProvider<AccountCubit>(
+              create: (context) => AccountCubit(RestApiService()),
+            ),
+          ],
+          child: MyApp(),
+        ),
+      ),
     ),
   );
 }
@@ -38,25 +57,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => RemoteConfigProvider()),
-        ChangeNotifierProvider(create: (context) => BottomNavProvider()),
-        ChangeNotifierProvider(create: (context) => SearchProvider()),
-        ChangeNotifierProvider(create: (context) => AccountProvider()),
-      ],
-      child: MaterialApp.router(
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        routerConfig: AppRouter.router,
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        ),
-        // home: const MainPage(),
+    return MaterialApp.router(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      routerConfig: AppRouter.router,
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
+      // home: const MainPage(),
     );
   }
 }

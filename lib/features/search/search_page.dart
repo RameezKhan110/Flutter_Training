@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_training/model/popular_movies.dart';
-import 'package:flutter_training/provider/search_provider.dart';
+import 'package:flutter_training/provider/search_cubit.dart';
 import 'package:flutter_training/utils/app_fonts.dart';
-import 'package:provider/provider.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -10,39 +10,37 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   context.read<SearchProvider>().getPopularMovies(1);
-    // });
-
-    return Consumer<SearchProvider>(
-      builder:
-          ((context, provider, child) =>
-              provider.isPopularMoviesLoading
-                  ? Scaffold(
-                    appBar: AppBar(title: Text("Popular Movies")),
-                    body: Center(child: CircularProgressIndicator()),
-                  )
-                  : Scaffold(
-                    appBar: AppBar(title: Text("Popular Movies")),
-                    body: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 10,
-                      ),
-                      child: ListView.separated(
-                        itemBuilder: (context, index) {
-                          return ItemPopularMovies(
-                            popularMoviesResult:
-                                provider.popularMovies!.results![index],
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return SizedBox(height: 10);
-                        },
-                        itemCount: provider.popularMovies!.results!.length,
-                      ),
-                    ),
-                  )),
+    final cubit = context.read<SearchCubit>();
+    if (cubit.state is SearchApiInitial) {
+      cubit.getPopularMovies(1);
+    }
+    
+    return Scaffold(
+      appBar: AppBar(title: Text("Popular Movies")),
+      body: BlocBuilder<SearchCubit, SearchApiState>(
+        builder: (context, state) {
+          if (state is SearchApiLoading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is SearchApiSuccess) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: ListView.separated(
+                itemBuilder: (context, index) {
+                  return ItemPopularMovies(
+                    popularMoviesResult: state.data.results![index],
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return SizedBox(height: 10);
+                },
+                itemCount: state.data.results!.length,
+              ),
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
     );
   }
 }
@@ -76,7 +74,7 @@ class ItemPopularMovies extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(width: 5,),
+                SizedBox(width: 5),
                 Text(
                   "${popularMoviesResult.releaseDate}",
                   style: TextStyle(
@@ -88,7 +86,7 @@ class ItemPopularMovies extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: 10,),
+            SizedBox(height: 10),
 
             Text(
               "${popularMoviesResult.overview}",
