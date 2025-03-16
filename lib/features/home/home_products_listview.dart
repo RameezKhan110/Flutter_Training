@@ -1,14 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_training/features/home/category_detail_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_training/navigation/app_paths.dart';
-import 'package:flutter_training/provider/remote_config_provider.dart';
+import 'package:flutter_training/provider/remote_config_cubit.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+
 import '../../model/product_model.dart';
 import '../../utils/app_fonts.dart';
 import '../../utils/app_images.dart';
-import '../../utils/app_strings.dart';
 import '../cart/cart_page.dart';
 
 class ItemProduct extends StatelessWidget {
@@ -92,29 +91,30 @@ class ProductsListView extends StatelessWidget {
       ),
     ];
 
-    return Consumer<RemoteConfigProvider>(
-      builder:
-          ((context, provider, child) => SizedBox(
-            height: 300,
-            child: ListView.separated(
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    context.push(AppPaths.categoryDetail);
-                  },
-                  child: ItemProduct(
-                    productImage: provider.products![index].productImage,
-                    productName: provider.products![index].productName,
-                  ),
-                );
-              },
-              itemCount: provider.products!.length,
-              scrollDirection: Axis.horizontal,
-              separatorBuilder: (context, index) {
-                return SizedBox(width: 20);
-              },
-            ),
-          )),
+    return BlocBuilder<RemoteConfigCubit, RemoteConfigState>(
+      builder: (context, state) {
+        return SizedBox(
+          height: 300,
+          child: ListView.separated(
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  context.push(AppPaths.categoryDetail);
+                },
+                child: ItemProduct(
+                  productImage: state.products![index].productImage,
+                  productName: state.products![index].productName,
+                ),
+              );
+            },
+            itemCount: state.products!.length,
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (context, index) {
+              return SizedBox(width: 20);
+            },
+          ),
+        );
+      },
     );
   }
 }

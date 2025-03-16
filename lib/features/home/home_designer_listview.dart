@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_training/provider/remote_config_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_training/provider/remote_config_cubit.dart';
+
 import '../../utils/app_images.dart';
 
 class ItemDesigner extends StatelessWidget {
@@ -46,23 +47,25 @@ class DesignersListView extends StatelessWidget {
       AppImages.designerImage,
       AppImages.designerImage,
       AppImages.designerImage,
-      AppImages.designerImage
+      AppImages.designerImage,
     ];
 
-    return Consumer<RemoteConfigProvider>(
-      builder: ( (context, provider, child) => SizedBox(
-        height: 80,
-        child: ListView.separated(
-          itemBuilder: (context, index) {
-            return ItemDesigner(designerImage: provider.designers![index]);
-          },
-          itemCount: provider.designers!.length,
-          scrollDirection: Axis.horizontal,
-          separatorBuilder: (context, index) {
-            return SizedBox(width: 5);
-          },
-        ),
-      )),
+    return BlocBuilder<RemoteConfigCubit, RemoteConfigState>(
+      builder: (context, state) {
+        return SizedBox(
+          height: 80,
+          child: ListView.separated(
+            itemBuilder: (context, index) {
+              return ItemDesigner(designerImage: state.designers![index]);
+            },
+            itemCount: state.designers!.length,
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (context, index) {
+              return SizedBox(width: 5);
+            },
+          ),
+        );
+      },
     );
   }
 }

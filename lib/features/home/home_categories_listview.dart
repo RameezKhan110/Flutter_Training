@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_training/features/home/category_detail_page.dart';
-import 'package:flutter_training/provider/remote_config_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_training/provider/remote_config_cubit.dart';
+
 import '../../utils/app_fonts.dart';
-import '../../utils/app_strings.dart';
 import '../cart/cart_page.dart';
 
 class CategoriesListView extends StatelessWidget {
@@ -11,21 +10,22 @@ class CategoriesListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<RemoteConfigProvider>(
-      builder:
-          ((context, provider, child) => SizedBox(
-                    height: 40,
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        return ItemCategory(name: provider.categories![index]);
-                      },
-                      itemCount: provider.categories!.length,
-                      scrollDirection: Axis.horizontal,
-                      separatorBuilder: (context, index) {
-                        return SizedBox(width: 5);
-                      },
-                    ),
-                  )),
+    return BlocBuilder<RemoteConfigCubit, RemoteConfigState>(
+      builder: (context, state) {
+        return SizedBox(
+          height: 40,
+          child: ListView.separated(
+            itemBuilder: (context, index) {
+              return ItemCategory(name: state.categories![index]);
+            },
+            itemCount: state.categories!.length,
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (context, index) {
+              return SizedBox(width: 5);
+            },
+          ),
+        );
+      },
     );
   }
 }
